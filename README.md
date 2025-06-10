@@ -88,11 +88,7 @@ Geliştirme modunda çalıştırmak için:
 npm run dev
 ```
 
-## Lisans
-
-MIT
-
 ## İletişim
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com 
+- GitHub: [@Tahaylmz](https://github.com/Tahaylmz)
+- Email: tahayilmazdev@gmail.com
