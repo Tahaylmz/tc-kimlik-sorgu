@@ -1,6 +1,17 @@
 const axios = require('axios');
 const soap = require('soap');
 const { ERROR_MESSAGES } = require('../utils/constants');
+const rateLimit = require('express-rate-limit');
+
+// Rate limiting ayarları
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 dakika
+    max: 10, // IP başına maksimum istek
+    message: {
+        success: false,
+        message: 'Çok fazla istek gönderdiniz. Lütfen 15 dakika sonra tekrar deneyin.'
+    }
+});
 
 class VerificationService {
     // Sadece TC Kimlik No kontrolü yapan metod
@@ -61,6 +72,14 @@ class VerificationService {
 
     static async verifyIdentity(data) {
         try {
+            // Rate limit kontrolü
+            if (!limiter.tryReset(data.ip)) {
+                return {
+                    success: false,
+                    message: 'Çok fazla istek gönderdiniz. Lütfen 15 dakika sonra tekrar deneyin.'
+                };
+            }
+
             console.log('Verification service input:', data);
 
             // TC Kimlik No algoritması
@@ -122,8 +141,6 @@ class VerificationService {
                     });
                 });
 
-                console.log('SOAP client created successfully');
-
                 // TC Kimlik doğrulama servisine istek at
                 const args = {
                     TCKimlikNo: parseInt(data.tckn),
@@ -142,45 +159,19 @@ class VerificationService {
                     });
                 });
 
-                console.log('SOAP response:', result);
-
                 // Servis yanıtını kontrol et
                 if (result.TCKimlikNoDogrulaResult === true) {
                     return {
                         success: true,
                         data: {
-                            tckn: data.tckn,
-                            ad: data.ad,
-                            soyad: data.soyad,
-                            dogumTarihi: data.dogumTarihi,
                             verified: true,
                             message: 'Kimlik doğrulama başarılı'
                         }
                     };
                 } else {
-                    // Daha açıklayıcı hata mesajları
-                    let errorMessage = 'Kimlik bilgileri doğrulanamadı. ';
-                    
-                    // Ad kontrolü
-                    if (!data.ad || data.ad.length < 2) {
-                        errorMessage += 'Ad bilgisi geçersiz. ';
-                    }
-                    
-                    // Soyad kontrolü
-                    if (!data.soyad || data.soyad.length < 2) {
-                        errorMessage += 'Soyad bilgisi geçersiz. ';
-                    }
-                    
-                    // Doğum yılı kontrolü
-                    const birthYear = parseInt(data.dogumTarihi.split('.')[2]);
-                    const currentYear = new Date().getFullYear();
-                    if (isNaN(birthYear) || birthYear < 1900 || birthYear > currentYear) {
-                        errorMessage += 'Doğum yılı geçersiz. ';
-                    }
-
                     return {
                         success: false,
-                        message: errorMessage.trim() || 'Girilen bilgiler sistemdeki kayıtlarla eşleşmiyor.'
+                        message: 'Kimlik bilgileri doğrulanamadı'
                     };
                 }
             } catch (soapError) {

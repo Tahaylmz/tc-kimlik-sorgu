@@ -1,14 +1,30 @@
 # TC Kimlik Doğrulama API
 
-Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir REST API sunar. Resmi Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü (NVİ) KPS servisini kullanarak kimlik doğrulaması yapar.
+Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir REST API sunar. **Sadece eğitim amaçlıdır** ve resmi Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü (NVİ) KPS servisini kullanır.
+
+## ⚠️ Önemli Uyarılar
+
+- Bu proje **sadece eğitim amaçlıdır**
+- Ticari kullanım için resmi izinler gereklidir
+- KVKK ve diğer yasal düzenlemelere uygun kullanılmalıdır
+- Kötüye kullanım durumunda yasal sorumluluk doğabilir
+- Her IP adresi için 15 dakikada maksimum 10 istek yapılabilir
 
 ## Özellikler
 
 - TC Kimlik numarası algoritma kontrolü
 - Ad, soyad ve doğum yılı doğrulaması
-- Detaylı hata mesajları
+- Rate limiting ve güvenlik önlemleri
 - RESTful API yapısı
 - Güvenli SOAP entegrasyonu
+
+## Güvenlik Önlemleri
+
+- IP bazlı rate limiting
+- Minimum istek aralığı
+- Güvenli veri işleme
+- Hassas bilgilerin loglanmaması
+- SSL/TLS zorunluluğu
 
 ## Kurulum
 
@@ -50,10 +66,6 @@ Content-Type: application/json
 {
     "success": true,
     "data": {
-        "tckn": "12345678901",
-        "ad": "AD",
-        "soyad": "SOYAD",
-        "dogumTarihi": "01.01.1990",
         "verified": true,
         "message": "Kimlik doğrulama başarılı"
     }
@@ -65,7 +77,7 @@ Content-Type: application/json
 ```json
 {
     "success": false,
-    "message": "Kimlik bilgileri doğrulanamadı. Ad bilgisi geçersiz."
+    "message": "Kimlik bilgileri doğrulanamadı"
 }
 ```
 
@@ -89,6 +101,16 @@ Testleri çalıştırmak için:
 ```bash
 npm test
 ```
+
+## Yasal Uyarı
+
+Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir API sunar. Projenin kullanımı aşağıdaki koşullara tabidir:
+
+1. Bu proje sadece eğitim amaçlıdır
+2. Ticari kullanım için resmi izinler gereklidir
+3. KVKK ve diğer yasal düzenlemelere uygun kullanılmalıdır
+4. Kötüye kullanım durumunda yasal sorumluluk doğabilir
+5. Proje sahibi, projenin kullanımından doğacak herhangi bir sorumluluğu kabul etmez
 
 ## Lisans
 
