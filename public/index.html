@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TC Kimlik Doğrulama</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>TC Kimlik Doğrulama</h1>
+    <form id="verificationForm">
+        <div class="form-group">
+            <label for="tckn">TC Kimlik No:</label>
+            <input type="text" id="tckn" name="tckn" maxlength="11" pattern="[0-9]{11}" required
+                   title="TC Kimlik No 11 haneli olmalıdır">
+            <small class="hint">11 haneli TC Kimlik numaranızı giriniz</small>
+        </div>
+        <div class="form-group">
+            <label for="ad">Ad:</label>
+            <input type="text" id="ad" name="ad" required
+                   pattern="[A-ZÇĞİÖŞÜa-zçğıöşü\s]{2,}"
+                   title="Adınızı giriniz (en az 2 karakter)">
+            <small class="hint">Adınızı giriniz</small>
+        </div>
+        <div class="form-group">
+            <label for="soyad">Soyad:</label>
+            <input type="text" id="soyad" name="soyad" required
+                   pattern="[A-ZÇĞİÖŞÜa-zçğıöşü\s]{2,}"
+                   title="Soyadınızı giriniz (en az 2 karakter)">
+            <small class="hint">Soyadınızı giriniz</small>
+        </div>
+        <div class="form-group">
+            <label for="dogumTarihi">Doğum Tarihi:</label>
+            <input type="text" id="dogumTarihi" name="dogumTarihi" 
+                   placeholder="GG.AA.YYYY" required
+                   pattern="([0-2][0-9]|3[0-1])\.(0[1-9]|1[0-2])\.(19[0-9]{2}|20[0-2][0-4])"
+                   title="Doğum tarihinizi GG.AA.YYYY formatında giriniz">
+            <small class="hint">Doğum tarihinizi GG.AA.YYYY formatında giriniz (örn: 12.04.2000)</small>
+        </div>
+        <button type="submit">Doğrula</button>
+    </form>
+    <div id="result"></div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html> 
