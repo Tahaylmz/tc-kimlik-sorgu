@@ -1,36 +1,22 @@
 # TC Kimlik Doğrulama API
 
-Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir REST API sunar. **Sadece eğitim amaçlıdır** ve resmi Nüfus ve Vatandaşlık İşleri Genel Müdürlüğü (NVİ) KPS servisini kullanır.
-
-## ⚠️ Önemli Uyarılar
-
-- Bu proje **sadece eğitim amaçlıdır**
-- Ticari kullanım için resmi izinler gereklidir
-- KVKK ve diğer yasal düzenlemelere uygun kullanılmalıdır
-- Kötüye kullanım durumunda yasal sorumluluk doğabilir
-- Her IP adresi için 15 dakikada maksimum 10 istek yapılabilir
+Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir API servisidir. NVI (Nüfus ve Vatandaşlık İşleri) servisini kullanarak kimlik doğrulaması yapar.
 
 ## Özellikler
 
 - TC Kimlik numarası algoritma kontrolü
-- Ad, soyad ve doğum yılı doğrulaması
-- Rate limiting ve güvenlik önlemleri
-- RESTful API yapısı
-- Güvenli SOAP entegrasyonu
-
-## Güvenlik Önlemleri
-
-- IP bazlı rate limiting
-- Minimum istek aralığı
-- Güvenli veri işleme
-- Hassas bilgilerin loglanmaması
-- SSL/TLS zorunluluğu
+- Gerçek zamanlı kimlik doğrulama
+- RESTful API
+- Hata yönetimi ve loglama
+- CORS desteği
+- Güvenli HTTP başlıkları
+- Helmet.js güvenlik önlemleri
 
 ## Kurulum
 
 1. Projeyi klonlayın:
 ```bash
-git clone https://github.com/kullanici/tc-kimlik-sorgu.git
+git clone https://github.com/yourusername/tc-kimlik-sorgu.git
 cd tc-kimlik-sorgu
 ```
 
@@ -39,7 +25,12 @@ cd tc-kimlik-sorgu
 npm install
 ```
 
-3. Uygulamayı başlatın:
+3. Gerekli modülleri yükleyin:
+```bash
+npm install express express-validator cors helmet soap
+```
+
+4. Uygulamayı başlatın:
 ```bash
 npm start
 ```
@@ -53,10 +44,10 @@ POST /api/verify
 Content-Type: application/json
 
 {
-    "tckn": "12345678901",
-    "ad": "AD",
-    "soyad": "SOYAD",
-    "dogumTarihi": "01.01.1990"
+    "tckn": "TC Kimlik No",
+    "ad": "Ad",
+    "soyad": "Soyad",
+    "dogumTarihi": "GG.AA.YYYY"
 }
 ```
 
@@ -77,14 +68,17 @@ Content-Type: application/json
 ```json
 {
     "success": false,
-    "message": "Kimlik bilgileri doğrulanamadı"
+    "message": "Hata mesajı"
 }
 ```
 
-## Kullanılan Servisler
+## Güvenlik
 
-- NVİ KPS Public Service: https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx
-- SOAP 1.1 Endpoint: https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL
+- CORS koruması
+- Helmet.js güvenlik başlıkları
+- Rate limiting
+- Input validasyonu
+- Güvenli HTTP başlıkları
 
 ## Geliştirme
 
@@ -94,32 +88,11 @@ Geliştirme modunda çalıştırmak için:
 npm run dev
 ```
 
-## Test
-
-Testleri çalıştırmak için:
-
-```bash
-npm test
-```
-
-## Yasal Uyarı
-
-Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir API sunar. Projenin kullanımı aşağıdaki koşullara tabidir:
-
-1. Bu proje sadece eğitim amaçlıdır
-2. Ticari kullanım için resmi izinler gereklidir
-3. KVKK ve diğer yasal düzenlemelere uygun kullanılmalıdır
-4. Kötüye kullanım durumunda yasal sorumluluk doğabilir
-5. Proje sahibi, projenin kullanımından doğacak herhangi bir sorumluluğu kabul etmez
-
 ## Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+MIT
 
-## Katkıda Bulunma
+## İletişim
 
-1. Bu depoyu fork edin
-2. Yeni bir özellik dalı oluşturun (`git checkout -b yeni-ozellik`)
-3. Değişikliklerinizi commit edin (`git commit -am 'Yeni özellik: Açıklama'`)
-4. Dalınıza push yapın (`git push origin yeni-ozellik`)
-5. Bir Pull Request oluşturun 
+- GitHub: [@yourusername](https://github.com/yourusername)
+- Email: your.email@example.com 
