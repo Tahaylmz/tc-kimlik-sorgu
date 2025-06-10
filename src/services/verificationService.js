@@ -2,6 +2,20 @@ const axios = require('axios');
 const soap = require('soap');
 const { ERROR_MESSAGES } = require('../utils/constants');
 const rateLimit = require('express-rate-limit');
+const fs = require('fs');
+const path = require('path');
+
+// Whitelist dosyasını oku
+const whitelistPath = path.join(__dirname, '../config/whitelist.json');
+let whitelist = { allowed_ips: [] };
+
+try {
+    const whitelistData = fs.readFileSync(whitelistPath, 'utf8');
+    whitelist = JSON.parse(whitelistData);
+    console.log('Whitelist yüklendi:', whitelist.allowed_ips);
+} catch (error) {
+    console.error('Whitelist dosyası okunamadı:', error);
+}
 
 // Rate limiting ayarları
 const limiter = rateLimit({
@@ -10,6 +24,10 @@ const limiter = rateLimit({
     message: {
         success: false,
         message: 'Çok fazla istek gönderdiniz. Lütfen 15 dakika sonra tekrar deneyin.'
+    },
+    // IP whitelist kontrolü
+    skip: (req) => {
+        return whitelist.allowed_ips.includes(req.ip);
     }
 });
 
@@ -72,7 +90,7 @@ class VerificationService {
 
     static async verifyIdentity(data) {
         try {
-            // Rate limit kontrolü
+            // Rate limit kontrolü (whitelist dışındaki IP'ler için)
             if (!limiter.tryReset(data.ip)) {
                 return {
                     success: false,
