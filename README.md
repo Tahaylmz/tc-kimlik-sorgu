@@ -72,6 +72,61 @@ Content-Type: application/json
 }
 ```
 
+### Curl İstekleri
+
+Aşağıda API'yi test etmek için kullanabileceğiniz curl komutları bulunmaktadır:
+
+#### Başarılı Doğrulama İsteği
+
+```bash
+curl -X POST http://localhost:3001/api/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tckn": "12345678901",
+    "ad": "John",
+    "soyad": "Doe",
+    "dogumTarihi": "01.01.1990"
+  }'
+```
+
+#### Geçersiz TC Kimlik Numarası
+
+```bash
+curl -X POST http://localhost:3000/api/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tckn": "123456789",
+    "ad": "John",
+    "soyad": "Doe",
+    "dogumTarihi": "01.01.1990"
+  }'
+```
+
+#### Eksik Alan İsteği
+
+```bash
+curl -X POST http://localhost:3000/api/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tckn": "12345678901",
+    "ad": "John"
+  }'
+```
+
+#### Verbose Mod ile İstek
+
+```bash
+curl -X POST http://localhost:3000/api/verify \
+  -H "Content-Type: application/json" \
+  -v \
+  -d '{
+    "tckn": "12345678901",
+    "ad": "John",
+    "soyad": "Doe",
+    "dogumTarihi": "01.01.1990"
+  }'
+```
+
 ## Güvenlik
 
 - CORS koruması
