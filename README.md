@@ -143,6 +143,77 @@ Geliştirme modunda çalıştırmak için:
 npm run dev
 ```
 
+## Testler
+
+Bu proje kapsamlı test kapsama alanına sahiptir. Unit testler ve entegrasyon testleri mevcuttur.
+
+### Test Komutları
+
+```bash
+# Tüm testleri çalıştır
+npm test
+
+# Testleri watch modunda çalıştır
+npm run test:watch
+
+# Test kapsama raporu oluştur
+npm run test:coverage
+
+# Sadece unit testleri çalıştır
+npm run test:unit
+
+# Sadece entegrasyon testleri çalıştır
+npm run test:integration
+```
+
+### Test Yapısı
+
+```
+tests/
+├── unit/                     # Unit testler
+│   ├── validators.test.js    # Doğrulama fonksiyonları testleri
+│   ├── verificationController.test.js  # Controller testleri
+│   ├── verificationService.test.js     # Servis testleri
+│   ├── validation.test.js    # Middleware testleri
+│   └── errorHandler.test.js  # Hata yönetimi testleri
+├── integration/              # Entegrasyon testleri
+│   └── api.test.js          # API endpoint testleri
+└── setup.js                 # Test konfigürasyonu
+```
+
+### Test Kapsama Alanı
+
+Testler aşağıdaki alanları kapsar:
+
+- **Validators**: TC Kimlik No algoritması, isim/soyisim validasyonu, doğum tarihi kontrolü
+- **Controllers**: API controller fonksiyonları ve hata yönetimi
+- **Services**: Kimlik doğrulama servisi ve SOAP entegrasyonu
+- **Middleware**: Validasyon middleware ve error handler
+- **API Endpoints**: RESTful API entegrasyon testleri
+
+### Test Örneği
+
+```javascript
+// Validators test örneği
+test('geçerli TC Kimlik No doğrulamalı', () => {
+  const result = Validators.validateTCKN('11111111110');
+  expect(result).toBeNull();
+});
+
+// API test örneği
+test('geçerli veri ile istek göndermeli', async () => {
+  const response = await request(app)
+    .post('/api/verify')
+    .send({
+      tckn: '11111111110',
+      ad: 'Ahmet',
+      soyad: 'Yılmaz',
+      dogumTarihi: '01.01.1990'
+    });
+  expect(response.status).toBe(200);
+});
+```
+
 ## İletişim
 
 - GitHub: [@Tahaylmz](https://github.com/Tahaylmz)
