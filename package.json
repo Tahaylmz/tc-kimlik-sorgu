@@ -3,6 +3,25 @@
   "version": "1.0.0",
   "description": "TC Kimlik No Doğrulama API",
   "main": "src/server.js",
+  "license": "MIT",
+  "author": "Taha Yılmaz <tahayilmazdev@gmail.com>",
+  "keywords": [
+    "tc-kimlik",
+    "turkish-id",
+    "identity-verification",
+    "nvi",
+    "api",
+    "nodejs",
+    "express"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tahaylmz/tc-kimlik-sorgu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Tahaylmz/tc-kimlik-sorgu/issues"
+  },
+  "homepage": "https://github.com/Tahaylmz/tc-kimlik-sorgu#readme",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
