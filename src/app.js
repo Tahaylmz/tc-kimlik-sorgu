@@ -39,26 +39,30 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
-// Sunucuyu başlat
-const server = app.listen(PORT, () => {
-    console.log(`Server ${PORT} portunda çalışıyor`);
-}).on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} zaten kullanımda. Lütfen başka bir port deneyin.`);
-        process.exit(1);
-    } else {
-        console.error('Sunucu başlatılırken hata oluştu:', err);
-        process.exit(1);
-    }
-});
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('SIGTERM sinyali alındı. Sunucu kapatılıyor...');
-    server.close(() => {
-        console.log('Sunucu kapatıldı.');
-        process.exit(0);
+// Test ortamında server başlatma
+let server;
+if (process.env.NODE_ENV !== 'test') {
+    // Sunucuyu başlat
+    server = app.listen(PORT, () => {
+        console.log(`Server ${PORT} portunda çalışıyor`);
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(`Port ${PORT} zaten kullanımda. Lütfen başka bir port deneyin.`);
+            process.exit(1);
+        } else {
+            console.error('Sunucu başlatılırken hata oluştu:', err);
+            process.exit(1);
+        }
     });
-});
+    
+    // Graceful shutdown
+    process.on('SIGTERM', () => {
+        console.log('SIGTERM sinyali alındı. Sunucu kapatılıyor...');
+        server.close(() => {
+            console.log('Sunucu kapatıldı.');
+            process.exit(0);
+        });
+    });
+}
 
 module.exports = app; 

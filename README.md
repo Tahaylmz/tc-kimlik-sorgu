@@ -1,38 +1,45 @@
-# TC Kimlik Doğrulama API
+# TC Kimlik Doğrulama API 🆔
 
-Bu proje, TC Kimlik numarası doğrulama işlemlerini gerçekleştiren bir API servisidir. NVI (Nüfus ve Vatandaşlık İşleri) servisini kullanarak kimlik doğrulaması yapar.
+TC Kimlik numarası doğrulama işlemlerini gerçekleştiren modern full-stack uygulaması. NVI (Nüfus ve Vatandaşlık İşleri) servisini kullanarak kimlik doğrulaması yapar.
 
-## Özellikler
+## ✨ Özellikler
 
-- TC Kimlik numarası algoritma kontrolü
-- Gerçek zamanlı kimlik doğrulama
+### Backend
+- TC Kimlik algoritma kontrolü  
 - RESTful API
-- Hata yönetimi ve loglama
-- CORS desteği
-- Güvenli HTTP başlıkları
-- Helmet.js güvenlik önlemleri
+- Kapsamlı test coverage (%80+)
+- Hata yönetimi ve güvenlik
 
-## Kurulum
+### Frontend  
+- **Modüler ES6 yapısı**
+- **Real-time validation**
+- **Auto-scroll hata yönetimi**
+- **Responsive tasarım**
+- **Network monitoring**
+- **Toast notifications**
 
-1. Projeyi klonlayın:
+## 🚀 Kurulum
+
 ```bash
-git clone https://github.com/yourusername/tc-kimlik-sorgu.git
+# Projeyi klonla
+git clone https://github.com/Tahaylmz/tc-kimlik-sorgu.git
 cd tc-kimlik-sorgu
-```
 
-2. Bağımlılıkları yükleyin:
-```bash
+# Bağımlılıkları yükle  
 npm install
-```
 
-3. Gerekli modülleri yükleyin:
-```bash
-npm install express express-validator cors helmet soap
-```
-
-4. Uygulamayı başlatın:
-```bash
+# Uygulamayı başlat
 npm start
+```
+
+**Tarayıcıda:** `http://localhost:3000`
+
+## 🔧 Development
+
+```bash
+npm test              # Testleri çalıştır
+npm run test:watch    # Test watch mode
+npm run dev           # Development mode
 ```
 
 ## API Kullanımı

@@ -5,42 +5,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC Kimlik Doğrulama</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🆔</text></svg>">
 </head>
 <body>
-    <h1>TC Kimlik Doğrulama</h1>
-    <form id="verificationForm">
-        <div class="form-group">
-            <label for="tckn">TC Kimlik No:</label>
-            <input type="text" id="tckn" name="tckn" maxlength="11" pattern="[0-9]{11}" required
-                   title="TC Kimlik No 11 haneli olmalıdır">
-            <small class="hint">11 haneli TC Kimlik numaranızı giriniz</small>
-        </div>
-        <div class="form-group">
-            <label for="ad">Ad:</label>
-            <input type="text" id="ad" name="ad" required
-                   pattern="[A-ZÇĞİÖŞÜa-zçğıöşü\s]{2,}"
-                   title="Adınızı giriniz (en az 2 karakter)">
-            <small class="hint">Adınızı giriniz</small>
-        </div>
-        <div class="form-group">
-            <label for="soyad">Soyad:</label>
-            <input type="text" id="soyad" name="soyad" required
-                   pattern="[A-ZÇĞİÖŞÜa-zçğıöşü\s]{2,}"
-                   title="Soyadınızı giriniz (en az 2 karakter)">
-            <small class="hint">Soyadınızı giriniz</small>
-        </div>
-        <div class="form-group">
-            <label for="dogumTarihi">Doğum Tarihi:</label>
-            <input type="text" id="dogumTarihi" name="dogumTarihi" 
-                   placeholder="GG.AA.YYYY" required
-                   pattern="([0-2][0-9]|3[0-1])\.(0[1-9]|1[0-2])\.(19[0-9]{2}|20[0-2][0-4])"
-                   title="Doğum tarihinizi GG.AA.YYYY formatında giriniz">
-            <small class="hint">Doğum tarihinizi GG.AA.YYYY formatında giriniz (örn: 12.04.2000)</small>
-        </div>
-        <button type="submit">Doğrula</button>
-    </form>
-    <div id="result"></div>
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>TC Kimlik Doğrulama Uygulaması Yükleniyor...</p>
+    </div>
 
-    <script src="/js/main.js"></script>
+    <div id="mainApp" class="main-app" style="display: none;">
+        <header class="app-header">
+            <div class="header-content">
+                <h1>
+                    <span class="header-icon">🆔</span>
+                    TC Kimlik Doğrulama
+                </h1>
+                <div class="network-status" id="networkStatus">
+                    <span class="status-indicator online" id="statusIndicator"></span>
+                    <span class="status-text" id="statusText">Çevrimiçi</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="form-container">
+                <form id="verificationForm" class="verification-form">
+                    <div class="form-group">
+                        <label for="tckn">TC Kimlik No:</label>
+                        <input type="text" id="tckn" name="tckn" maxlength="11" pattern="[0-9]{11}" required
+                               title="TC Kimlik No 11 haneli olmalıdır"
+                               autocomplete="off" inputmode="numeric">
+                        <small class="hint">11 haneli TC Kimlik numaranızı giriniz</small>
+                        <div class="input-validation"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ad">Ad:</label>
+                        <input type="text" id="ad" name="ad" required
+                               pattern="[A-ZÇĞİÖŞÜa-zçğıöşü\s]{2,}"
+                               title="Adınızı giriniz (en az 2 karakter)"
+                               autocomplete="given-name">
+                        <small class="hint">Adınızı giriniz</small>
+                        <div class="input-validation"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="soyad">Soyad:</label>
+                        <input type="text" id="soyad" name="soyad" required
+                               pattern="[A-ZÇĞİÖŞÜa-zçğıöşü\s]{2,}"
+                               title="Soyadınızı giriniz (en az 2 karakter)"
+                               autocomplete="family-name">
+                        <small class="hint">Soyadınızı giriniz</small>
+                        <div class="input-validation"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dogumTarihi">Doğum Tarihi:</label>
+                        <input type="text" id="dogumTarihi" name="dogumTarihi" 
+                               placeholder="GG.AA.YYYY" required
+                               pattern="([0-2][0-9]|3[0-1])\.(0[1-9]|1[0-2])\.(19[0-9]{2}|20[0-2][0-4])"
+                               title="Doğum tarihinizi GG.AA.YYYY formatında giriniz"
+                               autocomplete="bday">
+                        <small class="hint">Doğum tarihinizi GG.AA.YYYY formatında giriniz (örn: 12.04.2000)</small>
+                        <div class="input-validation"></div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-button" id="submitButton">
+                            <span class="button-text">Doğrula</span>
+                            <span class="button-loader" style="display: none;">
+                                <span class="loader-spinner"></span>
+                                Doğrulanıyor...
+                            </span>
+                        </button>
+                        <button type="button" class="clear-button" id="clearButton">
+                            <span>🗑️</span>
+                            Temizle
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="result" class="result-container"></div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>
+                    <span class="footer-icon">🔒</span>
+                    Güvenli TC Kimlik Doğrulama Servisi
+                </p>
+                <div class="keyboard-shortcuts">
+                    <small>
+                        <kbd>Ctrl</kbd> + <kbd>Enter</kbd>: Doğrula | 
+                        <kbd>Esc</kbd>: Temizle
+                    </small>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div id="errorBoundary" class="error-boundary" style="display: none;">
+        <div class="error-content">
+            <h2>🚫 Bir Hata Oluştu</h2>
+            <p id="errorMessage">Beklenmedik bir hata oluştu.</p>
+            <button onclick="location.reload()" class="reload-button">
+                🔄 Sayfayı Yenile
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainApp = document.getElementById('mainApp');
+        
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            mainApp.style.display = 'block';
+            mainApp.style.animation = 'fadeIn 0.5s ease-in';
+        }, 1000);
+
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            const errorBoundary = document.getElementById('errorBoundary');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            errorMessage.textContent = event.error?.message || 'Bilinmeyen hata';
+            errorBoundary.style.display = 'flex';
+            mainApp.style.display = 'none';
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+        });
+    </script>
+    
+    <script type="module" src="/js/app.js"></script>
+    
+    <script nomodule>
+        alert('Bu uygulama modern tarayıcılarda çalışır. Lütfen tarayıcınızı güncelleyin.');
+    </script>
 </body>
 </html> 

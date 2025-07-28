@@ -1,4 +1,9 @@
 const request = require('supertest');
+
+// Test için NODE_ENV'i test olarak ayarla
+process.env.NODE_ENV = 'test';
+process.env.PORT = '0'; // random port kullan
+
 const app = require('../../src/app');
 
 describe('API Integration Tests', () => {
@@ -84,6 +89,16 @@ describe('API Integration Tests', () => {
         status: 'OK',
         message: 'Service is running'
       });
+    });
+  });
+
+  describe('Static Files', () => {
+    test('ana sayfa yüklenmeli', async () => {
+      const response = await request(app)
+        .get('/')
+        .expect(200);
+      
+      expect(response.headers['content-type']).toMatch(/html/);
     });
   });
 
